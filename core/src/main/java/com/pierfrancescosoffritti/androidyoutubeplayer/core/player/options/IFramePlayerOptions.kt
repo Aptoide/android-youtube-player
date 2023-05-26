@@ -32,6 +32,7 @@ class IFramePlayerOptions private constructor(private val playerOptions: JSONObj
       internal const val ORIGIN = "origin"
       private const val REL = "rel"
       private const val IV_LOAD_POLICY = "iv_load_policy"
+      private const val MODEST_BRANDING = "modestbranding"
       private const val CC_LOAD_POLICY = "cc_load_policy"
       private const val CC_LANG_PREF = "cc_lang_pref"
       private const val LIST = "list"
@@ -200,6 +201,7 @@ class IFramePlayerOptions private constructor(private val playerOptions: JSONObj
      */
     @Deprecated("Deprecated and will have no effect")
     fun modestBranding(modestBranding: Int): Builder {
+      addInt(MODEST_BRANDING, modestBranding)
       return this
     }
 
