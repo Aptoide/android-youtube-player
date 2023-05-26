@@ -46,6 +46,14 @@ interface YouTubePlayer {
    */
   fun toggleFullscreen()
 
+  fun hideVideoTitle()
+
+  fun showVideoTitle()
+
+  fun hidePlayerControls()
+
+  fun showPlayerControls()
+
   fun addListener(listener: YouTubePlayerListener): Boolean
   fun removeListener(listener: YouTubePlayerListener): Boolean
 }

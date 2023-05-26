@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <style type="text/css">
+    <style type="text/css">
         html, body {
             height: 100%;
             width: 100%;
@@ -10,21 +10,29 @@
             overflow: hidden;
             position: fixed;
         }
+
+
+
+
     </style>
 
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- defer forces the library to execute after the html page is fully parsed. -->
-    <!-- This is needed to avoid race conditions, where the library executes and calls `onYouTubeIframeAPIReady` before the page is fully parsed. -->
-    <!-- See #873 on GitHub -->
-    <script defer src="https://www.youtube.com/iframe_api"></script>
-  </head>
+    <head>
+        <meta
+                content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+                name="viewport">
+        <!-- defer forces the library to execute after the html page is fully parsed. -->
+        <!-- This is needed to avoid race conditions, where the library executes and calls `onYouTubeIframeAPIReady` before the page is fully parsed. -->
+        <!-- See #873 on GitHub -->
+        <script
+                defer
+                src="https://www.youtube.com/iframe_api"></script>
+    </head>
 
-  <body>
-    <div id="youTubePlayerDOM"></div>
-  </body>
+    <body>
+        <div id="youTubePlayerDOM"></div>
+    </body>
 
-  <script type="text/javascript">
+    <script type="text/javascript">
     var UNSTARTED = "UNSTARTED";
     var ENDED = "ENDED";
     var PLAYING = "PLAYING";
@@ -166,5 +174,77 @@
       player.toggleFullscreen();
     }
 
-  </script>
+    function hideVideoTitle() {
+      var interval = setInterval(() => {
+        const playerIFrame = document.querySelector("iframe");
+        if (!playerIFrame) {
+          return;
+        }
+        const frameDoc = playerIFrame.contentDocument;
+        if (!frameDoc) {
+          return;
+        }
+        const title = frameDoc.querySelector('.ytp-chrome-top');
+        if (title) {
+          title.style.visibility = 'hidden';
+          clearInterval(interval)
+        }
+      }, 100);
+    }
+
+    function showVideoTitle() {
+      var interval = setInterval(() => {
+        const playerIFrame = document.querySelector("iframe");
+        if (!playerIFrame) {
+          return;
+        }
+        const frameDoc = playerIFrame.contentDocument;
+        if (!frameDoc) {
+          return;
+        }
+        const title = frameDoc.querySelector('.ytp-chrome-top');
+        if (title) {
+          title.style.visibility = 'visible';
+          clearInterval(interval)
+        }
+      }, 100);
+    }
+
+    function hidePlayerControls() {
+      var interval = setInterval(() => {
+        const playerIFrame = document.querySelector("iframe");
+        if (!playerIFrame) {
+          return;
+        }
+        const frameDoc = playerIFrame.contentDocument;
+        if (!frameDoc) {
+          return;
+        }
+        const controls = frameDoc.querySelector('.ytp-chrome-bottom');
+        if (controls) {
+          controls.style.visibility = 'hidden';
+          clearInterval(interval)
+        }
+      }, 100);
+    }
+
+    function showPlayerControls() {
+      var interval = setInterval(() => {
+        const playerIFrame = document.querySelector("iframe");
+        if (!playerIFrame) {
+          return;
+        }
+        const frameDoc = playerIFrame.contentDocument;
+        if (!frameDoc) {
+          return;
+        }
+        const controls = frameDoc.querySelector('.ytp-chrome-bottom');
+        if (controls) {
+          controls.style.visibility = 'visible';
+          clearInterval(interval)
+        }
+      }, 100);
+    }
+
+    </script>
 </html>

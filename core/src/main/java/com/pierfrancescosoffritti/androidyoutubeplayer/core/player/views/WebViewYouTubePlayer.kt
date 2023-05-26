@@ -29,8 +29,12 @@ private class YouTubePlayerImpl(private val webView: WebView) : YouTubePlayer {
   private val mainThread: Handler = Handler(Looper.getMainLooper())
   val listeners = mutableSetOf<YouTubePlayerListener>()
 
-  override fun loadVideo(videoId: String, startSeconds: Float) = webView.invoke("loadVideo", videoId, startSeconds)
-  override fun cueVideo(videoId: String, startSeconds: Float) = webView.invoke("cueVideo", videoId, startSeconds)
+  override fun loadVideo(videoId: String, startSeconds: Float) =
+    webView.invoke("loadVideo", videoId, startSeconds)
+
+  override fun cueVideo(videoId: String, startSeconds: Float) =
+    webView.invoke("cueVideo", videoId, startSeconds)
+
   override fun play() = webView.invoke("playVideo")
   override fun pause() = webView.invoke("pauseVideo")
   override fun mute() = webView.invoke("mute")
@@ -39,9 +43,21 @@ private class YouTubePlayerImpl(private val webView: WebView) : YouTubePlayer {
     require(volumePercent in 0..100) { "Volume must be between 0 and 100" }
     webView.invoke("setVolume", volumePercent)
   }
+
   override fun seekTo(time: Float) = webView.invoke("seekTo", time)
-  override fun setPlaybackRate(playbackRate: PlayerConstants.PlaybackRate) = webView.invoke("setPlaybackRate", playbackRate.toFloat())
+  override fun setPlaybackRate(playbackRate: PlayerConstants.PlaybackRate) =
+    webView.invoke("setPlaybackRate", playbackRate.toFloat())
+
   override fun toggleFullscreen() = webView.invoke("toggleFullscreen")
+
+  override fun hideVideoTitle() = webView.invoke("hideVideoTitle")
+
+  override fun showVideoTitle() = webView.invoke("showVideoTitle")
+
+  override fun hidePlayerControls() = webView.invoke("hidePlayerControls")
+
+  override fun showPlayerControls() = webView.invoke("showPlayerControls")
+
   override fun addListener(listener: YouTubePlayerListener) = listeners.add(listener)
   override fun removeListener(listener: YouTubePlayerListener) = listeners.remove(listener)
 
@@ -54,8 +70,7 @@ private class YouTubePlayerImpl(private val webView: WebView) : YouTubePlayer {
     val stringArgs = args.map {
       if (it is String) {
         "'$it'"
-      }
-      else {
+      } else {
         it.toString()
       }
     }
@@ -88,7 +103,10 @@ internal class WebViewYouTubePlayer constructor(
 
   internal var isBackgroundPlaybackEnabled = false
 
-  internal fun initialize(initListener: (YouTubePlayer) -> Unit, playerOptions: IFramePlayerOptions?) {
+  internal fun initialize(
+    initListener: (YouTubePlayer) -> Unit,
+    playerOptions: IFramePlayerOptions?
+  ) {
     youTubePlayerInitListener = initListener
     initWebView(playerOptions ?: IFramePlayerOptions.default)
   }
