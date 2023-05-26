@@ -25,8 +25,10 @@ interface YouTubePlayer {
 
   /** If the player is playing a playlist, play the next video. */
   fun nextVideo()
+
   /** If the player is playing a playlist, play the previous video. */
   fun previousVideo()
+
   /** If the player is playing a playlist, play the video at position [index]. */
   fun playVideoAt(index: Int)
 
@@ -54,6 +56,14 @@ interface YouTubePlayer {
   fun seekTo(time: Float)
 
   fun setPlaybackRate(playbackRate: PlayerConstants.PlaybackRate)
+
+  fun hideVideoTitle()
+
+  fun showVideoTitle()
+
+  fun hidePlayerControls()
+
+  fun showPlayerControls()
 
   fun addListener(listener: YouTubePlayerListener): Boolean
   fun removeListener(listener: YouTubePlayerListener): Boolean

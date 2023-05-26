@@ -26,7 +26,6 @@ import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
 
-
 private class YouTubePlayerImpl(
   private val webView: WebView,
   private val callbacks: YouTubePlayerCallbacks
@@ -34,11 +33,16 @@ private class YouTubePlayerImpl(
   private val mainThread: Handler = Handler(Looper.getMainLooper())
 
   private val lock = Any()
+
   @GuardedBy("lock")
   private val listeners = mutableSetOf<YouTubePlayerListener>()
 
-  override fun loadVideo(videoId: String, startSeconds: Float) = webView.invoke("loadVideo", videoId, startSeconds)
-  override fun cueVideo(videoId: String, startSeconds: Float) = webView.invoke("cueVideo", videoId, startSeconds)
+  override fun loadVideo(videoId: String, startSeconds: Float) =
+    webView.invoke("loadVideo", videoId, startSeconds)
+
+  override fun cueVideo(videoId: String, startSeconds: Float) =
+    webView.invoke("cueVideo", videoId, startSeconds)
+
   override fun play() = webView.invoke("playVideo")
   override fun pause() = webView.invoke("pauseVideo")
   override fun nextVideo() = webView.invoke("nextVideo")
@@ -52,14 +56,29 @@ private class YouTubePlayerImpl(
     val requestId = callbacks.registerBooleanCallback(callback)
     webView.invoke("getMuteValue", requestId)
   }
+
   override fun setVolume(volumePercent: Int) {
     require(volumePercent in 0..100) { "Volume must be between 0 and 100" }
     webView.invoke("setVolume", volumePercent)
   }
+
   override fun seekTo(time: Float) = webView.invoke("seekTo", time)
-  override fun setPlaybackRate(playbackRate: PlayerConstants.PlaybackRate) = webView.invoke("setPlaybackRate", playbackRate.toFloat())
-  override fun addListener(listener: YouTubePlayerListener) = synchronized(lock) { listeners.add(listener) }
-  override fun removeListener(listener: YouTubePlayerListener) = synchronized(lock) { listeners.remove(listener) }
+  override fun setPlaybackRate(playbackRate: PlayerConstants.PlaybackRate) =
+    webView.invoke("setPlaybackRate", playbackRate.toFloat())
+
+  override fun hideVideoTitle() = webView.invoke("hideVideoTitle")
+
+  override fun showVideoTitle() = webView.invoke("showVideoTitle")
+
+  override fun hidePlayerControls() = webView.invoke("hidePlayerControls")
+
+  override fun showPlayerControls() = webView.invoke("showPlayerControls")
+
+  override fun addListener(listener: YouTubePlayerListener) =
+    synchronized(lock) { listeners.add(listener) }
+
+  override fun removeListener(listener: YouTubePlayerListener) =
+    synchronized(lock) { listeners.remove(listener) }
 
   fun getListeners(): Collection<YouTubePlayerListener> = synchronized(lock) { listeners.toList() }
 
@@ -72,8 +91,7 @@ private class YouTubePlayerImpl(
     val stringArgs = args.map {
       if (it is String) {
         "'$it'"
-      }
-      else {
+      } else {
         it.toString()
       }
     }
@@ -109,7 +127,11 @@ internal class WebViewYouTubePlayer constructor(
 
   private val youTubePlayerBridge = YouTubePlayerBridge(this)
 
-  internal fun initialize(initListener: (YouTubePlayer) -> Unit, playerOptions: IFramePlayerOptions?, videoId: String?) {
+  internal fun initialize(
+    initListener: (YouTubePlayer) -> Unit,
+    playerOptions: IFramePlayerOptions?,
+    videoId: String?
+  ) {
     youTubePlayerInitListener = initListener
     initWebView(playerOptions ?: IFramePlayerOptions.getDefault(context), videoId)
   }
@@ -137,7 +159,13 @@ internal class WebViewYouTubePlayer constructor(
     addJavascriptInterface(youTubePlayerCallbacks, "YouTubePlayerCallbacks")
 
     val htmlPage = readHTMLFromUTF8File(resources.openRawResource(R.raw.ayp_youtube_player))
-      .replace("<<injectedVideoId>>", if (videoId != null) { "'$videoId'" } else { "undefined" })
+      .replace(
+        "<<injectedVideoId>>", if (videoId != null) {
+          "'$videoId'"
+        } else {
+          "undefined"
+        }
+      )
       .replace("<<injectedPlayerVars>>", playerOptions.toString())
 
     loadDataWithBaseURL(playerOptions.getOrigin(), htmlPage, "text/html", "utf-8", null)
