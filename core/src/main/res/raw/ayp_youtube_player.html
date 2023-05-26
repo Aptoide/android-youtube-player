@@ -66,6 +66,21 @@
     	  playerVars: <<injectedPlayerVars>>
 
       });
+
+      var iframeWindow = player.getIframe().contentWindow;
+
+      window.addEventListener("message", function(event) {
+        if (event.source === iframeWindow) {
+          var data = JSON.parse(event.data);
+          if (
+            data.event === "infoDelivery" &&
+            data.info &&
+            data.info.volume
+          ) {
+            YouTubePlayerBridge.sendMuteChanged(data.info.muted);
+          }
+        }
+      });
     }
 
     function sendPlayerStateChange(playerState) {
