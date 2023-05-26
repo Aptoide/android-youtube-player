@@ -104,6 +104,11 @@ class IFramePlayerOptions private constructor(private val playerOptions: JSONObj
       return this
     }
 
+    fun modestBranding(modestBranding: Int): Builder {
+      addInt(MODEST_BRANDING, modestBranding)
+      return this
+    }
+
     /**
      *  This parameter specifies the default language that the player will use to display captions.
      *  If you use this parameter and also set the cc_load_policy parameter to 1, then the player
