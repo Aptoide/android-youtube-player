@@ -1,19 +1,16 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply from: '../dependencies.gradle'
 
 android {
-  compileSdkVersion versions.compileSdk
+  compileSdkVersion AndroidConfig.COMPILE_SDK
 
   defaultConfig {
-    minSdkVersion versions.minSdk
-    targetSdkVersion versions.compileSdk
+    minSdkVersion AndroidConfig.MIN_SDK
+    targetSdkVersion AndroidConfig.TARGET_SDK
   }
 
   sourceSets {
-    main.res.srcDirs = [
-            'src/main/res',
-    ]
+    main.res.srcDirs = ['src/main/res',]
   }
   namespace 'com.pierfrancescosoffritti.androidyoutubeplayer'
 
@@ -27,18 +24,5 @@ android {
 }
 
 dependencies {
-  testImplementation "junit:junit:$versions.junit"
-  androidTestImplementation "androidx.test:runner:$versions.runner"
-  androidTestImplementation "androidx.test.espresso:espresso-core:$versions.espressoCore"
-
-  api "androidx.lifecycle:lifecycle-runtime-ktx:$versions.androidxLifecycleRuntime"
+  api LibraryDependency.LIFECYCLE_RUNTIME_KTX
 }
-
-ext {
-  PUBLISH_GROUP_ID = 'com.pierfrancescosoffritti.androidyoutubeplayer'
-  PUBLISH_VERSION = versions.publishVersion_core
-  PUBLISH_ARTIFACT_ID = 'core'
-  PUBLISH_DESCRIPTION = 'YouTube Player library for Android, stable and customizable.'
-}
-
-apply from: "../scripts/publish-module.gradle"
