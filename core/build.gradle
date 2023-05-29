@@ -13,6 +13,11 @@ android {
     main.res.srcDirs = ['src/main/res',]
   }
   namespace 'com.pierfrancescosoffritti.androidyoutubeplayer'
+
+  compileOptions {
+    sourceCompatibility = JavaLibrary.SOURCE_COMPATIBILITY_JAVA_VERSION
+    targetCompatibility = JavaLibrary.TARGET_COMPATIBILITY_JAVA_VERSION
+  }
 }
 
 dependencies {
