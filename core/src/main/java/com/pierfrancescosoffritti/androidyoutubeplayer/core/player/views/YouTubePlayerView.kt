@@ -247,4 +247,14 @@ class YouTubePlayerView(
       height = targetHeight
     }
   }
+
+  fun toggleAccessibility(enabled: Boolean) {
+    if (enabled) {
+      legacyTubePlayerView.webViewYouTubePlayer.importantForAccessibility =
+        View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
+    } else {
+      legacyTubePlayerView.webViewYouTubePlayer.importantForAccessibility =
+        View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
+    }
+  }
 }
