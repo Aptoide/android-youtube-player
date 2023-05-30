@@ -2,7 +2,6 @@ package com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
@@ -234,6 +233,16 @@ class YouTubePlayerView(
     layoutParams = layoutParams.apply {
       width = targetWidth
       height = targetHeight
+    }
+  }
+
+  fun toggleAccessibility(enabled: Boolean) {
+    if (enabled) {
+      legacyTubePlayerView.webViewYouTubePlayer.importantForAccessibility =
+        View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
+    } else {
+      legacyTubePlayerView.webViewYouTubePlayer.importantForAccessibility =
+        View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
     }
   }
 }
