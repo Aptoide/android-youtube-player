@@ -2,11 +2,11 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-  compileSdkVersion AndroidConfig.COMPILE_SDK
+  compileSdkVersion libs.versions.compileSdk.get().toInteger()
 
   defaultConfig {
-    minSdkVersion AndroidConfig.MIN_SDK
-    targetSdkVersion AndroidConfig.TARGET_SDK
+    minSdkVersion libs.versions.minSdk.get().toInteger()
+    targetSdkVersion libs.versions.targetSdk.get().toInteger()
   }
 
   sourceSets {
@@ -15,14 +15,14 @@ android {
   namespace 'com.pierfrancescosoffritti.androidyoutubeplayer'
 
   compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
   }
   kotlinOptions {
-    jvmTarget = '1.8'
+    jvmTarget = JavaVersion.VERSION_17
   }
 }
 
 dependencies {
-  api LibraryDependency.LIFECYCLE_RUNTIME_KTX
+  api libs.lifecycle.runtime.ktx
 }
